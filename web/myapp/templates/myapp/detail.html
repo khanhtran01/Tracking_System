@@ -1,0 +1,12 @@
+{% extends 'myapp/base.html' %}
+    {% block something %}
+    <h1>This is details view</h1>
+
+    <p> : {{ details.ques }} : </p>
+<!--    <ul>-->
+<!--        {% for item in items %}-->
+<!--        <li>bao gom : {{item.something}}</li>-->
+<!--        {% endfor %}-->
+<!--    </ul>-->
+    <a href="{% url 'myapp:index' %}">Back</a>
+    {% endblock %}

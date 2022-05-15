@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'myapp/css/login.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&family=Roboto&display=swap" rel="stylesheet">
+    <title>Đăng ký</title>
+</head>
+<body>
+    <div class="form">
+        <p id="title">Đăng ký</p>
+        <form action="" method="post">
+            {% csrf_token %}
+
+            <label class="subtitle" for="">Username</label><br>
+            {{forms.username}}
+            {% comment %} <input type="text" name="" id="" placeholder="Nhập username của bạn tại đây"><br> {% endcomment %}
+            <label class="subtitle" for="">Email</label><br>
+            {{forms.email}}
+            {% comment %} <input type="email" name="" id="" placeholder="Nhập email của bạn tại đây"><br> {% endcomment %}
+            <label class="subtitle" for="password">Mật khẩu</label><br>
+            {{forms.password1}}
+            {% comment %} <input type="text" placeholder="Nhập mật khẩu"> {% endcomment %}
+            <label class="subtitle" for="password">Nhập lại mật khẩu</label><br>
+            {{forms.password2}}
+            {% comment %} <input type="text" placeholder="Nhập lại mật khẩu"> {% endcomment %}
+            <div class="sub">
+                <div class="register-require">
+                    <p>Bạn đã có tài khoản?</p>
+                    <a href="{% url 'myapp:login' %}">Đăng nhập</a>
+                </div>
+                <button type="submit">Đăng Ký</button>
+            </div>
+            {{ forms.errors }}
+        </form>
+    </div>
+</body>
+</html>

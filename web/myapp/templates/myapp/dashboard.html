@@ -1,0 +1,268 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=My+Soul&family=Nunito:wght@300&family=Roboto&display=swap" rel="stylesheet">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'myapp/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'myapp/themify-icons/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'myapp/fontawesome-free-6.1.1-web/css/all.css' %}">
+    <title>DashBoard</title>
+</head>
+
+<body>
+    <div class="screencover">
+        <div id="trafficLightModal">
+            <div id="Modal">
+                <p class="Modal--title">
+                    Điều khiển đèn giao thông
+                </p>
+                <div class="close_icon" onclick="closeModal()">
+                    <em class="fa-solid fa-xmark"></em>
+                </div>
+                <form class="Traffic_time_form" action="{% url 'myapp:pushData' %}" method="post">
+                    {% csrf_token %}
+                    
+                    <label for="green_time">Đèn xanh 1</label>
+                    <input type="number" name="green_time" id="green_time">
+                    <label for="yellow_time">Đèn vàng 1</label>
+                    <input type="number" name="yellow_time" id="yellow_time">
+                    <label for="green_time2">Đèn xanh 2</label>
+                    <input type="number" name="green_time2" id="green_time2">
+                    <label for="yellow_time2">Đèn vàng 2</label>
+                    <input type="number" name="yellow_time2" id="yellow_time2">
+                    <div class="save_and_confirm">
+                        <input id="settimesubmit" name="action" type="submit" value="Save">
+                        <input onclick="closeModal()"name="action" id="comfirm_time" type="submit" value="Update">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="mapModal">
+            <div id="map">
+                <div class="closemap" onclick="closeMap()">
+                    <em class="fa-solid fa-xmark"></em>
+                </div>
+                <img src="{% static 'myapp/img/map.png' %}" alt="map">
+            </div>
+        </div>
+
+        <div id="settrafficLightModal">
+            <div id="setModal">
+                <p class="Modal--title">
+                    Điều khiển đèn giao thông
+                </p>
+                <div class="setclose_icon" onclick="closeSetModal()">
+                    <em class="fa-solid fa-xmark"></em>
+                </div>
+                <form class="setTraffic_time_form" action="{% url 'myapp:pushData' %}" method="post">
+                    {% csrf_token %}
+                    <div class="radio-setlight">
+                        <input type="radio" id="red" name="Setlight" value="emer">
+                        <label for="red">Đỏ</label>
+                    </div>
+                    <div class="radio-setlight">
+                        <input type="radio" id="yellow" name="Setlight" value="slow">
+                        <label for="yellow">Vàng</label>
+                    </div>
+                    <div class="radio-setlight">
+                        <input type="radio" id="normal" name="Setlight" value="normal">
+                        <label for="normal">Bình thường</label>
+                    </div>
+                    <input onclick="closeSetModal()" type="submit" value="Chỉnh sửa">
+                </form>
+            </div>
+        </div>
+
+
+        <div class="leftside" id="leftside">
+            <div class="leftheader">
+                <p id="groupName">
+                    Super Idol
+                </p>
+            </div>
+            <div class="leftcontainer">
+                <div class="menubox">
+                    <div class="menutitle">
+                        <span>Điều khiển</span>
+                    </div>
+                    <div class="listmenuchoose">
+                        <div class="normalselection">
+                            <div onclick="openModal()" class="leftsideselection">
+                                <em class="fa-solid fa-traffic-light"></em>
+                                <div class="menutext">
+                                    <span>Thời gian đèn giao thông</span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="normalselection" onclick="openSetModal()">
+                            <div class="leftsideselection">
+                                <em class="fa-solid fa-screwdriver-wrench"></em>
+                                <div class="menutext">
+                                    <span>Điều khiển đèn</span>    
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="menubox">
+                    <div class="menutitle">
+                        <span>Tính năng</span>
+                    </div>
+                    <div class="listmenuchoose">
+                        <div class="normalselection" onclick="openMap()">
+                            <div class="leftsideselection">
+                                <em class="fa-solid fa-map"></em>
+                                <div class="menutext" >
+                                    <span>Bản đồ</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <div class="rightside" id="rightside">
+            <div class="rightheader">
+                <div class="navbar">
+                    <div class="leftnav">
+                        <div id="menubtn" class="menuicon" onclick="changestatus()">
+                            <em class="ti-menu-alt"></em>
+                        </div>
+
+                        <div class="dropdownbtn">
+                            <div class="positionname">
+                                <span class="text">Ngã tư hàng xanh</span>
+                                <em class="ti-angle-down"></em>
+                            </div>
+                            <div class="dropdownContent">
+                                <a href="">Ngã 3 Chương Dương</a>
+                                <a href="">Đường Điện Biên Phủ</a>
+                                <a href="">Công viên Hoàng Văn Thụ</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rightnav">
+                        <div class="userinfo">
+
+                            <p>Xin chào, <b>{{ request.user }}</b></p>
+                        </div>
+                        <a class="logout" href="{% url 'myapp:logout' %}">Thoát</a>
+                    </div>
+                </div>
+            </div>
+            <div class="rightcontainer">
+                <div class="tagsList">
+                    <a onclick="tabsto(0)" id="day">Theo ngày</a>
+                    <a onclick="tabsto(1)" id="week">Theo tuần</a>
+                    <a onclick="tabsto(2)" id="month">Theo tháng</a>
+                </div>
+                <div class="listreport">
+                    <div class="infomation redcolor">
+                        <p>Thời điểm có nhiệt độ cao nhất : </p>
+                        <p id="report1"></p>
+                    </div>
+                    <div class="infomation redcolor">
+                        <p>Tháng có số xe vượt đèn đỏ nhiều nhất :</p>
+                        <p id="report2"></p>
+                    </div>
+                    <div class="infomation redcolor">
+                        <p>Tổng số xe vượt đèn đỏ được ghi nhận :</p>
+                        <p id="report3"></p>
+                    </div>
+                    <!-- <div class="infomation bluecolor">
+                        <span>Ngày có lượng xe vượt ngưỡng cao nhất : 14/02/2022</span>
+                    </div>
+
+                    <div class="infomation greencolor">
+                        <span>Ngày có lượng xe vượt ngưỡng cao nhất : 14/02/2022</span>
+                    </div> -->
+                </div>
+                <div class="boards">
+                    <div class="board activate">
+                        <p class="board_title">
+                            Biểu đồ theo ngày
+                        </p>
+                        <div class="chart">
+                            <canvas class="board-element" id="humiChart"
+                                style="width:100%;max-width:500px; height: 300px"></canvas>
+                            <!-- <canvas id="myChart1" style="width:100%;max-width:600px;height:300px"></canvas> -->
+                            <canvas class="board-element" id="tempChart"
+                                style="width:100%;max-width:500px; height: 300px"></canvas>
+                        </div>
+                        <div class="chart">
+                            <canvas class="board-element" id="badCarChart"
+                                style="width:100%;max-width:500px; height: 300px"></canvas>
+                        </div>
+                    </div>
+
+
+                    <div class="board">
+                        <p class="board_title">
+                            Biểu đồ theo tuần
+                        </p>
+                        <div class="chart">
+                            <canvas class="board-element" id="humiChart_week"
+                                style="width:100%;max-width:500px; height: 300px"></canvas>
+                            <!-- <canvas id="myChart1" style="width:100%;max-width:600px;height:300px"></canvas> -->
+                            <canvas class="board-element" id="tempChart_week"
+                                style="width:100%;max-width:500px; height: 300px"></canvas>
+                        </div>
+                        <div class="chart">
+                            <canvas class="board-element" id="badCarChart_week"
+                                style="width:100%;max-width:500px; height: 300px"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="board">
+                        <p class="board_title">
+                            Biểu đồ theo tháng
+                        </p>
+                        <div class="chart">
+                            <canvas class="board-element" id="humiChart_month"
+                                style="width:100%;max-width:500px; height: 300px"></canvas>
+                            <!-- <canvas id="myChart1" style="width:100%;max-width:600px;height:300px"></canvas> -->
+                            <canvas class="board-element" id="tempChart_month"
+                                style="width:100%;max-width:500px; height: 300px"></canvas>
+                        </div>
+                        <div class="chart">
+                            <canvas class="board-element" id="badCarChart_month"
+                                style="width:100%;max-width:500px; height: 300px"></canvas>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+
+            </div>
+            <div class="rightfooter">
+                <p id="demo"></p>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'myapp/js/animation.js' %}"></script>
+    <script src="{% static 'myapp/js/chart.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{% static 'myapp/js/liveChart.js' %}"></script>
+    <script src="{% static 'myapp/js/tabs.js' %}"></script>
+    <script src="{% static 'myapp/js/pushdata.js' %}"></script>
+
+</body>
+
+</html>
